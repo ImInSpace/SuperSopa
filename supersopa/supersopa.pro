@@ -6,7 +6,7 @@ CONFIG += c++11
 
 SOURCES += main.cpp \
     solver.cpp \
-    patro.cpp\
+    patro.cpp \
     wordsolver.cpp
 
 HEADERS += \

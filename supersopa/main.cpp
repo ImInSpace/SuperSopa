@@ -1,24 +1,30 @@
 #include <iostream>
-
-using namespace std;
-
-int main(int argc, char *argv[])
-{
-    cout << "Hello World!" << endl;
-    return 0;
-}
-
-
-/*
- *
- *
-
-#include <iostream>
 #include <fstream>
 #include <vector>
 #include <time.h>
 
 using namespace std;
+
+int main()
+{
+    cout << "What do you want to do?" << endl;
+    cout << "1-generate a dictionary file" << endl;
+    cout << "2-call solver" <<endl;
+    int initialOption;
+    cin>>initialOption;
+    if (initialOption==1){
+        generate();
+    }
+    else{
+
+    }
+    return 0;
+}
+
+
+
+
+
 
 vector<int> english = {0,
                        0,
@@ -53,7 +59,7 @@ vector<int> english = {0,
                        0};
 
 
-int main ()
+void generate ()
 {
 
     string file;
@@ -67,7 +73,7 @@ int main ()
     if (seed==-1)srand(time(NULL));
     else srand(seed);
 
-    ofstream ofs (file, ofstream::out);
+    ofstream ofs (file+".dict", ofstream::out);
     int total=118615;
     for (uint i=0; i<english.size(); i++){
         for(int j=0; j<english[i]*K/total; j++){
@@ -78,7 +84,6 @@ int main ()
         }
     }
     ofs.close();
-    return 0;
 }
 
-*/
+
