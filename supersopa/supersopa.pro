@@ -5,7 +5,9 @@ CONFIG -= qt
 CONFIG += c++11
 
 SOURCES += main.cpp \
-    solver.cpp
+    solver.cpp \
+    patro.cpp
 
 HEADERS += \
-    solver.h
+    solver.h \
+    patro.h
