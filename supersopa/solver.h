@@ -3,13 +3,14 @@
 
 #include <vector>
 #include <string>
+using namespace std;
 
 class Solver
 {
 public:
     Solver();
 
-    virtual Solver(vector<string> dictionary, vector<vector<char>> board);
+    Solver(vector<string> dictionary, vector<vector<char>> board);
 
     virtual void initDictionary(vector<string> dictionary);
 
@@ -17,7 +18,7 @@ public:
 
     virtual void solve();
 
-    string printSolution();
+    virtual string printSolution();
 };
 
 #endif // SOLVER_H
