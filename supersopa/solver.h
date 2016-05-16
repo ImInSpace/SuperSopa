@@ -12,13 +12,13 @@ public:
 
     Solver(vector<string> dictionary, vector<vector<char>> board);
 
-    virtual void initDictionary(vector<string> dictionary);
+    virtual void initDictionary(vector<string> dictionary)=0;
 
-    virtual void initBoard(vector<vector<char>> board);
+    virtual void initBoard(vector<vector<char>> board)=0;
 
-    virtual void solve();
+    virtual void solve()=0;
 
-    virtual string printSolution();
+    virtual string printSolution()=0;
 };
 
 #endif // SOLVER_H
