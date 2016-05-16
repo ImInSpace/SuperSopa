@@ -10,4 +10,5 @@ SOURCES += main.cpp \
 
 HEADERS += \
     solver.h \
-    patro.h
+    patro.h \
+    wordsolver.cpp
