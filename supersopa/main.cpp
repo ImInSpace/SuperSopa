@@ -8,6 +8,26 @@
 
 using namespace std;
 
+/*
+int main()
+{
+    cout << "Hello World!" << endl;
+
+    vector<string> d (2);
+    d[0] = "papa"; d[1] = "mama";
+    vector<vector<char>> b(2, vector<char> (2));
+    b[0][0] = 'p'; b[0][1] = 'm';
+    b[1][0] = 'o'; b[1][1] = 'a';
+    WordSolver ws(d, b);
+    ws.solve();
+    ws.printSolution();
+
+}
+*/
+
+
+
+
 vector<int> english = {0,
                        0,
                        93,
