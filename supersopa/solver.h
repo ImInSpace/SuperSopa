@@ -10,7 +10,7 @@ class Solver
 public:
     Solver();
 
-    Solver(vector<string> dictionary, vector<vector<char>> board);
+    //Solver(vector<string> dictionary, vector<vector<char>> board);
 
     virtual void initDictionary(vector<string> dictionary);
 
