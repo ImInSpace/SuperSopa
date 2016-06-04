@@ -2,7 +2,7 @@
 #define PATRO_H
 
 #include "solver.h"
-
+#include <map>
 class Patro: public Solver
 {
 public:
@@ -17,6 +17,22 @@ public:
     void solve();
 
     void printSolution();
+
+    struct arbre{
+        char caracter;
+        map< char, arbre > fills;
+        arbre* pare;
+
+    };
+
+private:
+
+
+    vector< vector < char> > _board;
+    arbre arrel;
+
+    void insereix(string paraula, arbre arbre);
+
 };
 
 #endif // PATRO_H
