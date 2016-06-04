@@ -18,7 +18,7 @@ public:
 
     virtual void solve()=0;
 
-    virtual string printSolution()=0;
+    virtual void printSolution()=0;
 };
 
 #endif // SOLVER_H

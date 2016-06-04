@@ -25,7 +25,7 @@ public:
 
     void solve();
 
-    string printSolution();
+    void printSolution();
 };
 
 #endif // WORDSOLVER_H

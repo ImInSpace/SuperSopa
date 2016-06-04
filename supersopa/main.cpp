@@ -1,6 +1,8 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <algorithm>
+#include <string>
 #include <time.h>
 #include <solver.h>
 #include <patro.h>
@@ -28,7 +30,7 @@ int main()
 
 
 
-vector<int> english = {0,
+vector<int> english = {0, //distribución de las palabras segun su tamaño en ingles
                        0,
                        93,
                        754,
@@ -60,33 +62,93 @@ vector<int> english = {0,
                        0,
                        0};
 
-
-void generate ()
+void generate_dictionary ()
 {
-
     string file;
     int K, seed;
-    cout<<"What file do you want to write to? ";
+    cout<<"What file do you want to write to? (without extension) ";
     cin>>file;
-    cout<<"How many words do you want? ";
+    cout<<"How many words do you want? (K) ";
     cin>>K;
     cout<<"What seed do you want? (-1 to time) ";
     cin>>seed;
     if (seed==-1)srand(time(NULL));
     else srand(seed);
 
-    ofstream ofs (file+".dict", ofstream::out);
-    int total=118615;
+    ofstream ofs (file+".dict");
+    ofs<<K<<endl;
+    int printed=0, total=118615;//precalculado
     for (unsigned int i=0; i<english.size(); i++){
         for(int j=0; j<english[i]*K/total; j++){
             for (unsigned int k=0; k<i; k++){
                 ofs<<rand()%10;
             }
             ofs<<endl;
+            printed++;
         }
+    }
+    while (printed<K){
+        for (unsigned int k=0; k<8; k++){
+            ofs<<rand()%10;
+        }
+        ofs<<endl;
+        printed++;
     }
     ofs.close();
 }
+
+vector<string> get_dictionary()
+{
+    cout << "What dictionary file do you want to open? (without extension) ";
+    string file;
+    cin>>file;
+    ifstream ifs (file+".dict");
+    int K;
+    ifs>>K;
+    vector<string> dictionary (K);
+    string aux;
+    for (unsigned int i=0; i<dictionary.size(); i++) ifs>>dictionary[i];
+    return dictionary;
+}
+
+Solver* get_solver()
+{
+    cout << "What solver do you want to use?" << endl;
+    cout << "1-Pattern search" << endl;
+    cout << "2-Word search" <<endl;
+    Solver* solver;
+    int solverOption;
+    cin>>solverOption;
+    if (solverOption==1){
+        solver=new Patro();
+    }
+    else solver=new WordSolver();
+    return solver;
+}
+
+vector<vector<char>> get_board(){
+    int N, seed;
+    cout<<"What size do you want the next board to be? (N) ";
+    cin>>N;
+    cout<<"What seed do you want? (-1 to time) ";
+    cin>>seed;
+    if (seed==-1)srand(time(NULL));
+    else srand(seed);
+    vector<vector<char>> board (N, vector<char> (N));
+    for (int i=0; i<N; i++){
+        for (int j=0; j<N; j++)board[i][j]='0'+(rand()%10);
+    }
+    return board;
+}
+
+bool ask_continue(){
+    string answer;
+    cout<<"Do you want to solve another board? ";
+    cin>>answer;
+    transform(answer.begin(), answer.end(), answer.begin(), ::tolower);
+    return answer=="yes" or answer=="y";
+}
+
 int main()
 {
     cout << "What do you want to do?" << endl;
@@ -95,20 +157,26 @@ int main()
     int initialOption;
     cin>>initialOption;
     if (initialOption==1){
-        generate();
+        generate_dictionary();
     }
     else{
-        cout << "What solver do you want to use?" << endl;
-        cout << "1-Pattern search" << endl;
-        cout << "2-Word search" <<endl;
-        Solver* solver;
-        int solverOption;
-        cin>>solverOption;
-        if (solverOption==1){
-            solver=new Patro();
-        }
-        else solver=new WordSolver();
+        Solver* solver=get_solver();
+
+        vector<string> dictionary=get_dictionary();
+        solver->initDictionary(dictionary);
+
+        vector<vector<char>> board=get_board();
+        solver->initBoard(board);
+
         solver->solve();
+        solver->printSolution();
+
+        while (ask_continue()){
+            board=get_board();
+            solver->initBoard(board);
+            solver->solve();
+            solver->printSolution();
+        }
     }
     return 0;
 }

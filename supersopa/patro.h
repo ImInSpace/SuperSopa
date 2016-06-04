@@ -16,7 +16,7 @@ public:
 
     void solve();
 
-    string printSolution();
+    void printSolution();
 };
 
 #endif // PATRO_H

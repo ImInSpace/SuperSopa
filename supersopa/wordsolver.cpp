@@ -1,4 +1,5 @@
 #include "wordsolver.h"
+#include <iostream>
 
 WordSolver::WordSolver()
 {
@@ -50,9 +51,8 @@ bool findword(string w, int l, int i, int j, vector<vector<pair<int,int>>> &v)
 
 }
 
-string WordSolver::printSolution()
+void WordSolver::printSolution()
 {
-
 }
 
 int WordSolver::getContiguous(int i, int j, vector<pair<int,int>> &v)
