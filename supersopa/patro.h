@@ -20,8 +20,10 @@ public:
 
     struct arbre{
         char caracter;
-        map< char, arbre > fills;
+        map< char, arbre* > fills;
         arbre* pare;
+        bool acaba = false;
+        int utilitzen = 0;
 
     };
 
@@ -29,9 +31,13 @@ private:
 
 
     vector< vector < char> > _board;
+    vector< string > _solucio;
     arbre arrel;
 
-    void insereix(string paraula, arbre arbre);
+
+    void cercapatro(int i, int j, arbre* node);
+    void insereix(string paraula, arbre* arbre);
+    void guardaidestrueix(string paraula, arbre* arbre);
 
 };
 
