@@ -22,6 +22,7 @@ Patro::Patro(vector<string> dictionary, vector<vector<char> > board)
 
 }
 
+
 void Patro::initDictionary(vector<string> dictionary)
 {
     //sort(dictionary.begin(),dictionary.end());
@@ -30,11 +31,14 @@ void Patro::initDictionary(vector<string> dictionary)
     arrel.acaba= false;
     arrel.fills.clear();
     for(string paraula : dictionary){
+        cerr << paraula << endl;
         insereix(paraula,&this->arrel);
-
+        cerr << "Ok" << endl;
     }
+    cerr << "inicialitzacio del diccionary Ok!" <<endl;
 }
 
+//envoltem el board amb el signe -
 void Patro::initBoard(vector<vector<char> > board)
 {
     this->_board =  vector<vector<char>>( board.size()+2 , vector<char> ( board.size()+2 , '-') );
@@ -44,7 +48,7 @@ void Patro::initBoard(vector<vector<char> > board)
          }
      }
 }
-
+//cost = NxNx cost(cercapatro)
 void Patro::solve()
 {
     for(int i =0; i<_board.size()-2;++i){
@@ -54,6 +58,8 @@ void Patro::solve()
     }
 }
 
+//O(n) = 1 + 8*O(n-1)
+//cost en cas pitjor
 void Patro::cercapatro(int i, int j, Patro::arbre* node){
     if (node != NULL){
         if(node->acaba)guardaidestrueix("",node);
@@ -87,16 +93,16 @@ void Patro::insereix(string paraula, Patro::arbre* node)
 {
     if (paraula.size() > 0) {
         char inici = paraula.front();
-        paraula.pop_back();
+        paraula.erase(0,1);
         if ( NULL == node->fills[inici] ){
            //el node no esta creat
-           arbre nou;
+           arbre nou = arbre();
            nou.caracter = inici;
            nou.pare = node;
            node->fills[inici] = &nou;
-
         }
-        insereix(paraula,node->fills[inici]);
-        node->utilitzen++;
+        arbre* fill = node->fills[inici];
+        insereix(paraula,fill);
+        (node->utilitzen)++;
     } else node->acaba = true;
 }
