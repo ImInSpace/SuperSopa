@@ -91,17 +91,25 @@ void Patro::printSolution()
 
 void Patro::insereix(string paraula, Patro::arbre* node)
 {
+    if (paraula.size() == 3){
+        cout<<"start"<<endl;
+    }
     if (paraula.size() > 0) {
         char inici = paraula.front();
         paraula.erase(0,1);
-        if ( NULL == node->fills[inici] ){
+        auto it = node->fills.find(inici);
+        if ( it == node->fills.end() ){
            //el node no esta creat
-           arbre nou = arbre();
-           nou.caracter = inici;
-           nou.pare = node;
-           node->fills[inici] = &nou;
+           arbre* nou = new arbre();
+           nou->caracter = inici;
+           nou->pare = node;
+           node->fills[inici] = nou;
+           it = node->fills.find(inici);
         }
-        arbre* fill = node->fills[inici];
+        else{
+            cout<<"reusing"<<endl;
+        }
+        arbre* fill = it->second;
         insereix(paraula,fill);
         (node->utilitzen)++;
     } else node->acaba = true;
