@@ -31,11 +31,8 @@ void Patro::initDictionary(vector<string> dictionary)
     arrel.acaba= false;
     arrel.fills.clear();
     for(string paraula : dictionary){
-        cerr << paraula << endl;
         insereix(paraula,&this->arrel);
-        cerr << "Ok" << endl;
     }
-    cerr << "inicialitzacio del diccionary Ok!" <<endl;
     this->_solucio = vector< string >(0);
 }
 
@@ -48,19 +45,16 @@ void Patro::initBoard(vector<vector<char> > board)
              _board[i+1][j+1]= board[i][j];
          }
      }
-     cerr << "inicialitzacio del board Ok!" << endl;
      this->_solucio = vector< string >(0);
 }
 //cost = NxNx cost(cercapatro)
 void Patro::solve()
 {
-    cerr << "Crida solve" << endl;
     for(int i =0; i<_board.size()-2;++i){
         for(int j=0; j<_board.size()-2; ++j ){
             cercapatro(i+1,j+1,arrel.fills[_board[i+1][j+1]]);
         }
     }
-    cerr << "solve Ok!" << endl;
 }
 
 //O(n) = 1 + 8*O(n-1)
@@ -75,18 +69,17 @@ void Patro::cercapatro(int i, int j, Patro::arbre* node){
 }
 
 void Patro::guardaidestrueix(string paraula, Patro::arbre* node){
-    cerr << "crida guarda" << endl;
     (node->utilitzen)--;
+    vector<char> borrar = vector<char> (0);
     for(pair<const char, Patro::arbre*> fill : node->fills){
-        cerr << fill.first << " " << fill.second << endl;
-        if(fill.second->utilitzen == 0) node->fills.erase(node->fills.find(fill.first));
+        if(fill.second == NULL or fill.second->utilitzen == 0) borrar.push_back(fill.first);
     }
+    for(char b : borrar) node->fills.erase(node->fills.find(b));
     if (node->caracter == '+'){
         this->_solucio.push_back(paraula);
     } else {
         guardaidestrueix(node->caracter+paraula, node->pare);
     }
-    cerr << "end crida guarda" << endl;
 
 }
 
@@ -99,6 +92,7 @@ void Patro::printSolution()
 
 void Patro::insereix(string paraula, Patro::arbre* node)
 {
+    (node->utilitzen)++;
     if (paraula.size() > 0) {
         char inici = paraula.front();
         paraula.erase(0,1);
@@ -115,6 +109,5 @@ void Patro::insereix(string paraula, Patro::arbre* node)
         }
         arbre* fill = it->second;
         insereix(paraula,fill);
-        (node->utilitzen)++;
     } else node->acaba = true;
 }
