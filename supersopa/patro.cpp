@@ -36,6 +36,7 @@ void Patro::initDictionary(vector<string> dictionary)
         cerr << "Ok" << endl;
     }
     cerr << "inicialitzacio del diccionary Ok!" <<endl;
+    this->_solucio = vector< string >(0);
 }
 
 //envoltem el board amb el signe -
@@ -47,15 +48,19 @@ void Patro::initBoard(vector<vector<char> > board)
              _board[i+1][j+1]= board[i][j];
          }
      }
+     cerr << "inicialitzacio del board Ok!" << endl;
+     this->_solucio = vector< string >(0);
 }
 //cost = NxNx cost(cercapatro)
 void Patro::solve()
 {
+    cerr << "Crida solve" << endl;
     for(int i =0; i<_board.size()-2;++i){
         for(int j=0; j<_board.size()-2; ++j ){
             cercapatro(i+1,j+1,arrel.fills[_board[i+1][j+1]]);
         }
     }
+    cerr << "solve Ok!" << endl;
 }
 
 //O(n) = 1 + 8*O(n-1)
@@ -70,15 +75,18 @@ void Patro::cercapatro(int i, int j, Patro::arbre* node){
 }
 
 void Patro::guardaidestrueix(string paraula, Patro::arbre* node){
+    cerr << "crida guarda" << endl;
     (node->utilitzen)--;
-    for(pair<const char, Patro::arbre*> fills : node->fills){
-        if(fills.second->utilitzen == 0) node->fills[fills.first]= NULL;
+    for(pair<const char, Patro::arbre*> fill : node->fills){
+        cerr << fill.first << " " << fill.second << endl;
+        if(fill.second->utilitzen == 0) node->fills.erase(node->fills.find(fill.first));
     }
     if (node->caracter == '+'){
         this->_solucio.push_back(paraula);
     } else {
         guardaidestrueix(node->caracter+paraula, node->pare);
     }
+    cerr << "end crida guarda" << endl;
 
 }
 
@@ -100,6 +108,8 @@ void Patro::insereix(string paraula, Patro::arbre* node)
            arbre* nou = new arbre();
            nou->caracter = inici;
            nou->pare = node;
+           nou->acaba = false;
+           nou->utilitzen = 0;
            node->fills[inici] = nou;
            it = node->fills.find(inici);
         }
