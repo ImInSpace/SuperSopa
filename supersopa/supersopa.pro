@@ -7,11 +7,13 @@ CONFIG += c++11
 SOURCES += main.cpp \
     solver.cpp \
     patro.cpp \
+    wordsolver_allappearances.cpp \
     wordsolver.cpp
 
 HEADERS += \
     solver.h \
     patro.h \
+    wordsolver_allappearances.h \
     wordsolver.h
 
 QMAKE_CXXFLAGS += -std=c++11

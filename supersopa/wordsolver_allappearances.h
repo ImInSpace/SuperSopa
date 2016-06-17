@@ -8,14 +8,14 @@ typedef pair<int,int> Pos;
 typedef vector<Pos> Appearance;
 typedef vector<Appearance> WordAppearances;
 
-class WordSolver : public Solver
+class WordSolverAllAppearances : public Solver
 {
 
 public:
 
-    WordSolver();
+    WordSolverAllAppearances();
 
-    WordSolver(vector<string> _dictionary, vector<vector<char>> _board);
+    WordSolverAllAppearances(vector<string> _dictionary, vector<vector<char>> _board);
 
     void initDictionary(const vector<string>& _dictionary);
 
@@ -30,12 +30,9 @@ private:
 
     struct arbre{
         char caracter;
-        int parent_appearance_to_check = 0; // number of parent appearances checked
         map <char, arbre*> fills;
         arbre* pare;
         bool in_dictionary = false;
-        bool in_board = true;
-        bool completely_explored = false;
         WordAppearances appearances;
     };
 
@@ -44,23 +41,13 @@ private:
     int n, k;
 
     arbre arrel;
-    int i_to_check = 1;
-    int j_to_check = 1;
 
     vector<WordAppearances> solution;
     // solution[i] = list of sequences of positions in board to make i-th word of the dictionary
 
     void solve_rec(arbre* node);
     void print_rec(arbre* node, string word);
-    bool get_more_appearances(WordSolver::arbre* node);
-    void insereix(string paraula, WordSolver::arbre* node);
-
-    Pos contiguous[8] =
-        {
-            make_pair(-1,-1), make_pair(-1, 0), make_pair(-1, 1),
-            make_pair( 0,-1),                   make_pair( 0, 1),
-            make_pair( 1,-1), make_pair( 1, 0), make_pair( 1, 1),
-        };
+    void insereix(string paraula, WordSolverAllAppearances::arbre* node);
 
 };
 
