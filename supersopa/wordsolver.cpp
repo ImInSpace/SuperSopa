@@ -49,11 +49,11 @@ void WordSolver::initDictionary(const vector<string> &_dictionary)
 
 void WordSolver::initBoard(const vector<vector<char>>& _board)
 {
-    n = board.size();
+    n = _board.size();
     board =  vector<vector<char>>( n+2 , vector<char> ( n+2 , '-') );
-    for(int i =0; i<board.size();++i){
-        for(int j=0; j<board.size(); ++j ){
-            board[i+1][j+1]= board[i][j];
+    for(int i = 1; i<=n;++i){
+        for(int j= 1; j<=n; ++j ){
+            board[i][j]= _board[i-1][j-1];
         }
     }
 }
@@ -61,10 +61,11 @@ void WordSolver::initBoard(const vector<vector<char>>& _board)
 void WordSolver::solve()
 {
     for(pair<const char, WordSolver::arbre*> it : arrel.fills){
+        it.second->appearances = WordAppearances(0);
         for (int i = 1; i <= n; ++i){
             for (int j = 1; j <= n; ++j){
                 if (board[i][j] == it.first){
-                    it.second->appearances = WordAppearances(1, Appearance(1, make_pair(i,j)));
+                    it.second->appearances.push_back(Appearance(1, make_pair(i,j)));
                 }
             }
         }
