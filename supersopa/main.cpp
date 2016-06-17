@@ -141,9 +141,9 @@ vector<vector<char>> get_board(){
     return board;
 }
 
-bool ask_continue(){
+bool ask_question(string question){
     string answer;
-    cout<<"Do you want to solve another board? ";
+    cout<<question<<' ';
     cin>>answer;
     transform(answer.begin(), answer.end(), answer.begin(), ::tolower);
     return answer=="yes" or answer=="y";
@@ -168,25 +168,46 @@ int main()
         generate_dictionary();
     }
     else{
+        //bool calculate_time=ask_question("Do you want to calculate time?");
         Solver* solver=get_solver();
 
         vector<string> dictionary=get_dictionary();
         solver->initDictionary(dictionary);
 
-        vector<vector<char>> board=get_board();
-        solver->initBoard(board);
-        print_board(board);
-
+        //vector<vector<char>> board=get_board();
+        //solver->initBoard(board);
+        //print_board(board);
+        
+        clock_t begin_time;
+        vector<vector<char>> board;
+        for (int N=100; N<7000; N*=2){
+                srand(0);
+                board = vector<vector<char>> (N, vector<char> (N));
+                for (int i=0; i<N; i++){
+                    for (int j=0; j<N; j++)board[i][j]='0'+(rand()%10);
+                }
+                solver->initDictionary(dictionary);
+                solver->initBoard(board);
+                begin_time = clock();
+                solver->solve();
+                cout<< float( clock () - begin_time ) /  CLOCKS_PER_SEC <<endl;
+                
+        }
+        /*
+        if (calculate_time)begin_time = clock();
         solver->solve();
+        if (calculate_time)cout << "Time spent solving: "<< float( clock () - begin_time ) /  CLOCKS_PER_SEC;
         solver->printSolution();
 
-        while (ask_continue()){
+        while (ask_question("Do you want to solve another board?")){
             board=get_board();
             solver->initBoard(board);
             print_board(board);
+            if (calculate_time)begin_time = clock();
             solver->solve();
+            if (calculate_time)cout << "Time spent solving: "<< float( clock () - begin_time ) /  CLOCKS_PER_SEC;
             solver->printSolution();
-        }
+        }*/
     }
     return 0;
 }
