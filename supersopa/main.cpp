@@ -149,6 +149,14 @@ bool ask_continue(){
     return answer=="yes" or answer=="y";
 }
 
+void print_board(vector<vector<char>> board){
+    cout<<"Board: "<<endl;
+    for (vector<char> line : board){
+        for (char c : line)cout<<c;
+        cout<<endl;
+    }
+}
+
 int main()
 {
     cout << "What do you want to do?" << endl;
@@ -167,6 +175,7 @@ int main()
 
         vector<vector<char>> board=get_board();
         solver->initBoard(board);
+        print_board(board);
 
         solver->solve();
         solver->printSolution();
@@ -174,6 +183,7 @@ int main()
         while (ask_continue()){
             board=get_board();
             solver->initBoard(board);
+            print_board(board);
             solver->solve();
             solver->printSolution();
         }
