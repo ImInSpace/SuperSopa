@@ -43,6 +43,8 @@ private:
     vector<vector<char>> board;
     int n, k;
 
+    int num_sols;
+
     arbre arrel;
     int i_to_check = 1;
     int j_to_check = 1;
@@ -50,6 +52,7 @@ private:
     vector<WordAppearances> solution;
     // solution[i] = list of sequences of positions in board to make i-th word of the dictionary
 
+    int count_sol(WordSolver::arbre* node);
     void solve_rec(arbre* node);
     void print_rec(arbre* node, string word);
     bool get_more_appearances(WordSolver::arbre* node);
