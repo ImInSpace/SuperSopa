@@ -180,7 +180,7 @@ int main()
         
         clock_t begin_time;
         vector<vector<char>> board;
-        for (int N=100; N<7000; N*=2){
+        for (int N=3000; N<13000; N+=2000){
                 srand(0);
                 board = vector<vector<char>> (N, vector<char> (N));
                 for (int i=0; i<N; i++){

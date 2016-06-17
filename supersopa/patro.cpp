@@ -23,9 +23,9 @@ Patro::Patro(vector<string> dictionary, vector<vector<char> > board)
 }
 
 
+//Crear l'arble a partir de l'arrel,te cost O(#lletres) que es O(K)
 void Patro::initDictionary(const vector<string> &dictionary)
 {
-    //sort(dictionary.begin(),dictionary.end());
     //indirectament al crear l'arbre ja ho estarem ordenant en temps O(#lletres)
     this->arrel.caracter = '+';
     arrel.acaba= false;
@@ -36,7 +36,7 @@ void Patro::initDictionary(const vector<string> &dictionary)
     this->_solucio = vector< string >(0);
 }
 
-//envoltem el board amb el signe -
+//Envoltem el board amb el signe O(N^2)
 void Patro::initBoard(const vector<vector<char> > &board)
 {
     this->_board =  vector<vector<char>>( board.size()+2 , vector<char> ( board.size()+2 , '-') );
@@ -47,6 +47,7 @@ void Patro::initBoard(const vector<vector<char> > &board)
      }
      this->_solucio = vector< string >(0);
 }
+
 //cost = NxNx cost(cercapatro)
 void Patro::solve()
 {
@@ -57,8 +58,11 @@ void Patro::solve()
     }
 }
 
-//O(n) = 1 + 8*O(n-1)
-//cost en cas pitjor
+
+//Funcio recursiva per a fer el dfs, cost es O del nombre de nodes que explorem,
+// que en cas pitjor es O(8^profunditat dels fills).
+//La profunditat dels fills depen de K lleugerament com es pot veure a la taula del main
+//Pero es pot considerar una constant per K grans
 void Patro::cercapatro(int i, int j, Patro::arbre* node){
     if (node != NULL){
         if(node->acaba)guardaidestrueix("",node);
@@ -68,6 +72,7 @@ void Patro::cercapatro(int i, int j, Patro::arbre* node){
     }
 }
 
+//Treu un mot del diccionari i el guarda a la solució O (profunditat dels fills)
 void Patro::guardaidestrueix(string paraula, Patro::arbre* node){
     (node->utilitzen)--;
     vector<char> borrar = vector<char> (0);
