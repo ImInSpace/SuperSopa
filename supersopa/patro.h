@@ -10,9 +10,9 @@ public:
 
     Patro(vector<string> dictionary, vector<vector<char>> board);
 
-    void initDictionary(vector<string> dictionary);
+    void initDictionary(const vector<string>& dictionary);
 
-    void initBoard(vector<vector<char>> board);
+    void initBoard(const vector<vector<char>>& board);
 
     void solve();
 

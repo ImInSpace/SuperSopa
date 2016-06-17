@@ -13,3 +13,5 @@ HEADERS += \
     solver.h \
     patro.h \
     wordsolver.h
+
+QMAKE_CXXFLAGS += -std=c++11

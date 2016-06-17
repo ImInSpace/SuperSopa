@@ -12,9 +12,9 @@ public:
 
     Solver(vector<string> dictionary, vector<vector<char>> board);
 
-    virtual void initDictionary(vector<string> dictionary)=0;
+    virtual void initDictionary(const vector<string>& dictionary)=0;
 
-    virtual void initBoard(vector<vector<char>> board)=0;
+    virtual void initBoard(const vector<vector<char>>& board)=0;
 
     virtual void solve()=0;
 

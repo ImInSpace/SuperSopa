@@ -23,7 +23,7 @@ Patro::Patro(vector<string> dictionary, vector<vector<char> > board)
 }
 
 
-void Patro::initDictionary(vector<string> dictionary)
+void Patro::initDictionary(const vector<string> &dictionary)
 {
     //sort(dictionary.begin(),dictionary.end());
     //indirectament al crear l'arbre ja ho estarem ordenant en temps O(#lletres)
@@ -37,11 +37,11 @@ void Patro::initDictionary(vector<string> dictionary)
 }
 
 //envoltem el board amb el signe -
-void Patro::initBoard(vector<vector<char> > board)
+void Patro::initBoard(const vector<vector<char> > &board)
 {
     this->_board =  vector<vector<char>>( board.size()+2 , vector<char> ( board.size()+2 , '-') );
-     for(int i =0; i<board.size();++i){
-         for(int j=0; j<board.size(); ++j ){
+    for(int i =0; i<board.size();++i){
+     for(int j=0; j<board.size(); ++j ){
              _board[i+1][j+1]= board[i][j];
          }
      }

@@ -2,30 +2,53 @@
 #define WORDSOLVER_H
 
 #include "solver.h"
+#include <map>
+
+typedef pair<int,int> Pos;
+typedef vector<Pos> Appearance;
+typedef vector<Appearance> WordAppearances;
 
 class WordSolver : public Solver
 {
-private:
-    vector<string> dictionary;
-    vector<vector<char>> board;
-    int n, k;
-
-    vector<vector<vector<pair<int,int>>>> ap; // apperanances: ap[i] ap. of word i = list of sequences of positions in board to make word i
-
-    int getContiguous(int i, int j, vector<pair<int,int>> &v);
 
 public:
+
     WordSolver();
 
     WordSolver(vector<string> _dictionary, vector<vector<char>> _board);
 
-    void initDictionary(vector<string> _dictionary);
+    void initDictionary(const vector<string>& _dictionary);
 
-    void initBoard(vector<vector<char>> _board);
+    void initBoard(const vector<vector<char> > &_board);
 
     void solve();
 
     void printSolution();
+
+
+private:
+
+    struct arbre{
+        char caracter;
+        map <char, arbre*> fills;
+        arbre* pare;
+        bool in_dictionary = false;
+        WordAppearances appearances;
+    };
+
+    vector<string> dictionary;
+    vector<vector<char>> board;
+    int n, k;
+
+    arbre arrel;
+
+    vector<WordAppearances> solution;
+    // solution[i] = list of sequences of positions in board to make i-th word of the dictionary
+
+    void solve_rec(arbre* node);
+    void print_rec(arbre* node, string word);
+    void insereix(string paraula, WordSolver::arbre* node);
+
 };
 
 #endif // WORDSOLVER_H
