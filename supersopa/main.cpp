@@ -174,10 +174,13 @@ int main()
         vector<string> dictionary=get_dictionary();
         solver->initDictionary(dictionary);
 
-        //vector<vector<char>> board=get_board();
-        //solver->initBoard(board);
-        //print_board(board);
-        
+        vector<vector<char>> board=get_board();
+        solver->initBoard(board);
+        print_board(board);
+
+        solver->solve();
+        solver->printSolution();
+        /*
         clock_t begin_time;
         vector<vector<char>> board;
         for (int N=3000; N<13000; N+=2000){
@@ -190,9 +193,10 @@ int main()
                 solver->initBoard(board);
                 begin_time = clock();
                 solver->solve();
+                solver->printSolution();
                 cout<< float( clock () - begin_time ) /  CLOCKS_PER_SEC <<endl;
                 
-        }
+        }*/
         /*
         if (calculate_time)begin_time = clock();
         solver->solve();

@@ -50,13 +50,17 @@ void WordSolver::solve()
     while (i_to_check <= n && num_visited_children > 0){
         char c = board[i_to_check][j_to_check];
 
-        // If this cell's character hadn't been found before, we add it
-        if (not visited_children[c]){ // NOTA: si no existeix cap paraula q comenci amb un cert caracter aixo peta
-            visited_children[c] = true;
-            --num_visited_children;
-            arrel.fills[c]->appearances = WordAppearances(0);
+        // If there exists any word that starts with this character
+        if (visited_children.find(c) != visited_children.end()){ // O(log n) --> could be improved but is not crytical
+            // If this cell's character hadn't been found before, we add it
+            if (not visited_children[c]){ // [SOLVED] NOTA: si no existeix cap paraula q comenci amb un cert caracter aixo peta
+                visited_children[c] = true;
+                --num_visited_children;
+                arrel.fills[c]->appearances = WordAppearances(0);
+            }
+            arrel.fills[c]->appearances.push_back(Appearance(1, make_pair(i_to_check, j_to_check)));
         }
-        arrel.fills[c]->appearances.push_back(Appearance(1, make_pair(i_to_check, j_to_check)));
+
         ++j_to_check;
         if (j_to_check > n){
             j_to_check = 1;
@@ -78,8 +82,22 @@ void WordSolver::solve()
         }
     }
 
-
+    num_sols = 0;
+    for (pair<const char, WordSolver::arbre*> it : arrel.fills){
+        num_sols += count_sol(it.second);
+    }
 }
+
+int WordSolver::count_sol(WordSolver::arbre* node)
+{
+    int a = 0;
+    if (node->in_dictionary && node->in_board) ++a;
+    for (pair<const char, WordSolver::arbre*> it : node->fills){
+        a += count_sol(it.second);
+    }
+    return a;
+}
+
 /*
 struct arbre{
     char caracter;
@@ -122,13 +140,12 @@ void WordSolver::solve_rec(WordSolver::arbre* node)
     }
 }
 
-// Searches more appearances of node. Returns false iff can't find any more appearances
+// Searches more appearances of node. Returns true iff can find any more appearances
 bool WordSolver::get_more_appearances(WordSolver::arbre* node)
 {
     if (node->completely_explored) return false;
 
     if (node->pare == &arrel){
-        if (i_to_check > n) return false; // no cal
 
         // We look for this letter in the board
         while (i_to_check <= n){
@@ -141,10 +158,12 @@ bool WordSolver::get_more_appearances(WordSolver::arbre* node)
             }
 
             if (c == node->caracter) {
+                // If this letter is the one we were looking for, we stop searching
                 return true;
             }
         }
 
+        // We've explored the whole board
         for (pair<const char, WordSolver::arbre*> it : arrel.fills){
             it.second->completely_explored = true;
         }
@@ -154,7 +173,7 @@ bool WordSolver::get_more_appearances(WordSolver::arbre* node)
     else {
         int initial_appearances = node->appearances.size();
         while (node->appearances.size() == initial_appearances && not node->completely_explored){
-            // While we haven't found any appearance and we can't discard that it is not in the board
+            // While we haven't found any appearance and we haven't explored all the possibilities
             if (node->parent_appearance_to_check < node->pare->appearances.size()){
                 // If we haven't checked all of parents' appearances, we look for contiguous positions
                 // of parent's appearances' last position
@@ -172,7 +191,7 @@ bool WordSolver::get_more_appearances(WordSolver::arbre* node)
             } else {
                 // If we have checked all of parent's appearances, we demand parent to look for more
                 // appearances. If it doesn't find any more, then this word has no more appearances in board
-                node->completely_explored = get_more_appearances(node->pare);
+                node->completely_explored = not get_more_appearances(node->pare);
             }
         }
 
@@ -192,7 +211,7 @@ void WordSolver::printSolution()
 
 void WordSolver::print_rec(WordSolver::arbre* node, string word)
 {
-    if (node->in_dictionary){
+    if (node->in_dictionary && node->in_board){
         cout << "WORD: " << word << endl;
         for (Appearance a : node->appearances){
             cout << " ";
